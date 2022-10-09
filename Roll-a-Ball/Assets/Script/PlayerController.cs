@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private int point;
     private float movementX;
     private float movementY;
+    private object material;
 
     // Start is called before the first frame update
     void Start()
@@ -52,13 +53,31 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Cube"))
+        if (other.gameObject.CompareTag("Cube") && (GetComponent<Renderer>().material.color ==Color.yellow))
         {
             other.gameObject.SetActive(false);
             point = point + 10;
 
             SetPointText();
         }
+        else if(other.gameObject.CompareTag("CubeBlue") && (GetComponent<Renderer>().material.color == Color.blue))
+        {
+            other.gameObject.SetActive(false);
+            point = point + 10;
+
+            SetPointText();
+
+        }
+        else if (other.gameObject.CompareTag("CubeRed") && (GetComponent<Renderer>().material.color == Color.red))
+        {
+            other.gameObject.SetActive(false);
+            point = point + 10;
+
+            SetPointText();
+
+        }
+
+
 
     }
 

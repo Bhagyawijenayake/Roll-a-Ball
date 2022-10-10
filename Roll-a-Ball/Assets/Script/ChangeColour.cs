@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ChangeColour : MonoBehaviour
@@ -8,6 +9,7 @@ public class ChangeColour : MonoBehaviour
     private int currentColorArray = 0;
     public Color[] colorArray = new Color[3];
     public Renderer renderer;
+    public TextMeshProUGUI timeText;
 
     private void Start()
     {
@@ -23,6 +25,7 @@ public class ChangeColour : MonoBehaviour
         if (colorArray.Length > 0)
         {
             time += Time.deltaTime;
+            timeText.text = "Time: " + (-((int)time)+5).ToString();
             if (time > 5)
             {
                 if (colorArray.Length <= currentColorArray) currentColorArray = 0;

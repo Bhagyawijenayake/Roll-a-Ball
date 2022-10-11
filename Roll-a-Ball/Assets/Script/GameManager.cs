@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public PlayerController player;
+
     
+
     public GameObject playButton;
     public GameObject gameOver;
     public GameObject winTextObject;

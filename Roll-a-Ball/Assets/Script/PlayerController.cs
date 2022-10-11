@@ -15,8 +15,15 @@ public class PlayerController : MonoBehaviour
     public GameObject playButton;
     public GameObject time;
 
+    public GameOverScreen gameOverScreen;
+    public YouWinScreen youWinScreen;
+    
+
 
     [SerializeField] private AudioSource rollSoundEffect;
+    [SerializeField] private AudioSource bgSoundEffect;
+    [SerializeField] private AudioSource crashSoundEffect;
+    [SerializeField] private AudioSource pointCollectSoundEffect;
 
 
 
@@ -37,6 +44,7 @@ public class PlayerController : MonoBehaviour
         winTextObject.SetActive(false);
         GAmeOverObject.SetActive(false);
         playButton.SetActive(false);
+        bgSoundEffect.Play();
     }
     void OnMove(InputValue movementValue)
     {
@@ -67,9 +75,11 @@ public class PlayerController : MonoBehaviour
 
         if(point>=150)
         {
+            youWinScreen.Setup(point);
             winTextObject.SetActive(true);
             FindObjectOfType<GameManager>().Pause();
             time.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
     
@@ -80,7 +90,12 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        lifeText.text = "LifeLines: " + life.ToString();
+        lifecount();
+    }
+    
+    private void lifecount()
+    {
+        lifeText.text = "lifes: " + life.ToString();
     }
 
 
@@ -98,6 +113,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Cube") && (GetComponent<Renderer>().material.color ==Color.yellow))
         {
+            pointCollectSoundEffect.Play();
             other.gameObject.SetActive(false);
             point = point + 10;
 
@@ -106,6 +122,7 @@ public class PlayerController : MonoBehaviour
         }
         else if(other.gameObject.CompareTag("CubeBlue") && (GetComponent<Renderer>().material.color == Color.blue))
         {
+            pointCollectSoundEffect.Play();
             other.gameObject.SetActive(false);
             point = point + 10;
 
@@ -115,6 +132,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("CubeRed") && (GetComponent<Renderer>().material.color == Color.red))
         {
+            pointCollectSoundEffect.Play();
             other.gameObject.SetActive(false);
             point = point + 10;
 
@@ -124,12 +142,18 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            
+            crashSoundEffect.Play();
             life--;
+            lifecount();
             if (life <= 0)
             {
-                
+                bgSoundEffect.Stop();
                 FindObjectOfType<GameManager>().GameOver();
+
+                gameOverScreen.Setup(point);
+
+                //ball need deactivate
+                gameObject.SetActive(false);
                 time.SetActive(false);
             }
            
